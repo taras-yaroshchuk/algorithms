@@ -5,6 +5,11 @@ import java.util.*;
 public class MergeSortingStrategy<V extends Comparable<V>> implements SortingStrategy<V> {
 
 
+    /**
+     * Sort input array using Merge sort algorithm
+     * @param inputArray - array that need to be sorted
+     * @return sorted array
+     */
     @Override
     public List<V> sort(List<V> inputArray) {
         if (inputArray.size() == 0)
@@ -18,6 +23,9 @@ public class MergeSortingStrategy<V extends Comparable<V>> implements SortingStr
     }
 
 
+    /**
+     * Recursively Sort 2 subarrays and merge result into inputArray
+     */
     public void sort(List<V> inputArray, List<V> temporaryArray, int from, int to) {
         if (to <= from)
             return;
@@ -27,6 +35,9 @@ public class MergeSortingStrategy<V extends Comparable<V>> implements SortingStr
         merge(inputArray, temporaryArray, from, mid, to);
     }
 
+    /**
+     * Merge 2 subarrays from inputArray using temporaryArray
+     */
     public void merge(List<V> inputArray, List<V> temporaryArray, int lo, int mid, int hi) {
         int i = lo;
         int j = mid + 1;

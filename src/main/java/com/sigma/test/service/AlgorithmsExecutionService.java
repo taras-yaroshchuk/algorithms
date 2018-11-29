@@ -29,6 +29,11 @@ public class AlgorithmsExecutionService {
     private final WhitespacesRestoreService whitespacesRestoreService;
 
 
+    /**
+     * Parse each line of input csv file, run algorithm and store result in single file.
+     * @param algInfoLines - list of input lines that contain algorithm definition and config files pathes.
+     * @param outputFile - is used to storing results
+     */
     public void runAlgorithmsAndSaveResult(List<String> algInfoLines, String outputFile) throws IOException {
         log.info("Trying to parse {} lines and save result to {}", algInfoLines.size(), outputFile);
         List<String> results = algInfoLines.stream()
@@ -39,6 +44,9 @@ public class AlgorithmsExecutionService {
         Files.write(Paths.get(outputFile), results);
     }
 
+    /**
+     * Parse individual row of algorithms info file, read input and run algorithm processing on it
+     */
     private String parseAndRunAlgorithm(String row) {
         String[] configValues = row.split(ROW_SEPARATOR);
         Algorithm algorithm = Algorithm.parseAlgorithm(configValues[0]);
@@ -54,10 +62,18 @@ public class AlgorithmsExecutionService {
         return formatResultString(algorithm, result);
     }
 
+    /**
+     * Simple format of output file. Could be changed in fute
+     */
     private String formatResultString(Algorithm algorithm, String result) {
         return String.format("%s,[%s]", algorithm.toString(), result);
     }
 
+    /**
+     * Run algorithm based on algorithm param
+     * @param inputPath - path of file that contains inout data
+     * @return result of algorithm run
+     */
     private Optional<String> processAlgorithm(Algorithm algorithm, String inputPath, String[] configValues) {
         switch (algorithm) {
             case SORT:
@@ -71,6 +87,10 @@ public class AlgorithmsExecutionService {
         }
     }
 
+    /**
+     * Read dictionary file and start processing of RestoringWhitespaces
+     * @return result of algorithm's work
+     */
     private String processRestoringWhitespaces(String inputPath, String[] configValues) {
         if (configValues.length < 3)
             return NO_DICTIONARY_PATH_DEFINED;
@@ -82,6 +102,10 @@ public class AlgorithmsExecutionService {
         }
     }
 
+    /**
+     * Read input array and sort it
+     * @return result of algorithm's work
+     */
     private String processSortingAndPrepareResult(String inputPath) {
         try {
             return sortingService.sort(inputPath)

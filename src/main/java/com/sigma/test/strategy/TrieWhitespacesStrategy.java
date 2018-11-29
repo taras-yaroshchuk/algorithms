@@ -2,7 +2,6 @@ package com.sigma.test.strategy;
 
 import com.google.common.collect.Lists;
 import com.sigma.test.Trie;
-import com.sigma.test.TrieNode;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,43 +24,56 @@ public class TrieWhitespacesStrategy implements RestoreWhitespacesStrategy {
         return restoreWhitespaces(words);
     }
 
+    /**
+     * Get all words from single string input using Trie data structure
+     *
+     * @param input - string input without whitespaces
+     * @param trie  - Trie data structure filled with dictionary words
+     * @return list of all found words if any, empty list otherwise
+     */
     private List<String> getWordsList(String input, Trie trie) {
         List<String> words = Lists.newArrayList();
         getWordsList(input, 0, 1, trie, words);
         return words;
     }
 
-
+    /**
+     * Get all words from single string input using Trie data structure
+     *
+     * @param input - string input without whitespaces
+     * @param trie - Trie data structure filled with dictionary words
+     * @param startIndex - start index of word that will be chacked in Trie
+     * @param endIndex - end index of word that will be chacked in Trie
+     * @return list of all found words if any, empty list otherwise
+     */
     private boolean getWordsList(String input, int startIndex, int endIndex, Trie trie, List<String> words) {
         String currentKey = input.substring(startIndex, endIndex);
 
-        Optional<TrieNode> currentNode = trie.get(currentKey);
-
-        return currentNode.map(node -> {
-
-            // If word from input matches with word from dictionary
-            if (node.isFinal()) {
-
-                if (endIndex == input.length()) {
-                    words.add(currentKey);
-                    return true;
-                }
-
-                //start processing for next word
-                boolean finishFound = getWordsList(input, endIndex, endIndex + 1, trie, words);
-                if (finishFound) {
-                    words.add(currentKey);
-                    return true;
-                }
-
-            }
-
-            //start processing for current string + one more char
-            return getWordsList(input, startIndex, endIndex + 1, trie, words);
-
-        }).orElse(false);
+        return trie.get(currentKey)
+                .map(node -> {
+                    // If word from input matches with word from dictionary
+                    if (node.isFinal()) {
+                        //algorithm succeed
+                        if (endIndex == input.length()) {
+                            words.add(currentKey);
+                            return true;
+                        }
+                        //start processing for next word
+                        boolean finishFound = getWordsList(input, endIndex, endIndex + 1, trie, words);
+                        if (finishFound) {
+                            words.add(currentKey);
+                            return true;
+                        }
+                    }
+                    //start processing for current string + one more char
+                    return getWordsList(input, startIndex, endIndex + 1, trie, words);
+                })
+                .orElse(false);
     }
 
+    /**
+     * If list is not empty, join words by whitespace char. Otherwise, return Optional.empty
+     */
     private Optional<String> restoreWhitespaces(List<String> words) {
         if (words.isEmpty())
             return Optional.empty();
@@ -71,6 +83,9 @@ public class TrieWhitespacesStrategy implements RestoreWhitespacesStrategy {
         }
     }
 
+    /**
+     * Build Trie woth dictionary words
+     */
     private Trie buildTrie(List<String> words) {
         return Trie.builder()
                 .addAllWords(words)

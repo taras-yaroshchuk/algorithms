@@ -9,7 +9,7 @@ import java.util.Optional;
  * Trie data structure with few modifications:
  * 1. "get" method return node even if its not final (even if its not a whole word, but subword).
  * 2. Classic Trie use array of child nodes for each node, but it require to init N*256 arrays, where N - tree depth.
- * In order to save memory this implementation use Map[]
+ * In order to save memory this implementation use Map for storing link to children nodes.
  *
  */
 public class Trie {
