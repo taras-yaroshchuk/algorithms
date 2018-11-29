@@ -21,6 +21,14 @@ Restoring whitespaces is implemented using Trie data structure with few modifica
 As far as merge sorting is still one of the fastest algorithms, it was implemented using generic comparable type. 
 It could be modified in future to use insertion sorting for small arrays.
 
+Sample input:
+```
+SORT,src/main/resources/tosort.csv
+WHITESPACES,src/test/resources/restore_whitespaces.csv,src/test/resources/restore_whitespaces_dictionary.csv
+SORT,invalid
+WHITESPACES,invalid
+```
+
 Sample output:
 ```$xslt
 SORT,[10,5,4,3,2,1]

@@ -1,4 +1,4 @@
-SORT,/Users/tara_yaroshchuck/IdeaProjects/algorithms-runner/src/main/resources/tosort.csv
+SORT,src/main/resources/tosort.csv
 WHITESPACES,src/test/resources/restore_whitespaces.csv,src/test/resources/restore_whitespaces_dictionary.csv
 SORT,invalid
 WHITESPACES,invalid
